@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>GNA Language</title>
+		<link rel="stylesheet" href="stylesheet.css">
+		<style>
+			.table
+			{
+				display: table;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+				width: 100%;
+			}
+			.tableRow
+			{
+				display: table-row;
+				padding: 0px;
+				margin: 0px;
+				text-align: center;
+				width: 100%;
+			}
+			.tableCell
+			{
+				display: table-cell;
+				padding: 5px;
+				margin: 0px;
+				text-align: center;
+				color: #cc6699;
+			}
+			#content
+			{
+				background-color: #FFFFFF;
+				border-radius: 15px;
+				margin: 10px;
+			}
+			#correctMessage
+			{
+				display: none;
+				position: fixed;
+				z-index: 2;
+				width: 500px;
+				height: auto;
+				top: 40%;
+				left: 30%;
+				font-size: 150%;
+				background-color: #FFFFFF;
+				border: 1px solid black;
+				border-radius: 15px;
+				padding: 10px;
+				text-align: center;
+			}
+			#wordCell1, #wordCell2, #wordCell3, #wordCell4
+			{
+				font-size: 130%;
+				padding: 10px;
+				cursor: pointer;
+				width: 50%;
+			}
+			#wordCell1, #wordCell3
+			{
+				text-align: right;
+			}
+			#wordCell2, #wordCell4
+			{
+				text-align: left;
+			}
+			form
+			{
+				text-align: left;
+			}
+			#languagePopup
+			{
+				border-top: none;
+				padding: 10px;
+				position: absolute;
+				left: 0px;
+				border: 1px solid black;
+			}
+			#popupButton
+			{
+				border-radius: 0px 5px 5px 0px;
+				font-size: 100%;
+				border: 1px solid black;
+				padding: 20px 10px;
+				background-color: white;
+				color: #006699;
+				cursor: pointer;
+				position: absolute;
+				left: 0px;
+				
+			}
+			#popupButton:hover
+			{
+				color: white;
+				background-color: #006699;
+			}
+			#scoreText
+			{
+				border-radius: 0px 5px 5px 0px;
+				font-size: 100%;
+				border: 1px solid black;
+				padding: 20px 10px;
+				background-color: white;
+				color: #006699;
+				position: absolute;
+				left: 0px;
+			}
+			#questionCell
+			{
+				width: 90%;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="title">
+			<h1>GNA Language Central</h1>
+			<h3>"Language Learning Is In Our GNA"</h3>
+		</div>
+		<div id="menu">
+			<ul><li><a class="menuCell" href="index.html">Main</a></li><li><a class="menuCell" href="commonphrases.html">Common Phrases</a></li><li><span class="menuCell" id="gamesTab">Games<div id="gamesMenu"><p>
+				<a href="vocabGame.html">Vocab Game</a><br>
+				<a href="conjugationGame.html">Conjugations</a><br>
+				<a href="landmarkGame.html">Toponym Game</a><br>
+			</p></div></span></li><li><a class="menuCell" href="">Charts/Tables</a></li><li><a class="menuCell" href="">About</a></li></ul>
+		</div>
+		<p>
+		<div id="content" class="table">
+			<div class="tableRow">
+				<div class="tableCell">
+					<div id="scoreText">Score:    0</div><br><br><br>
+					<button id="popupButton">Change Language</button><br><br><br>
+					<div id="languagePopup">
+						<div>
+							<form id="langFormFrom">
+								From:<br>
+								<input type="radio" name="language" value="english" checked>English</input><br>
+								<input type="radio" name="language" value="spanish">Spanish</input><br>
+								<input type="radio" name="language" value="french">French</input><br>
+								<input type="radio" name="language" value="russian">Russian</input><br>
+							</form>
+							<form id="langFormTo">
+								To:<br>
+								<input type="radio" name="language" value="english">English</input><br>
+								<input type="radio" name="language" value="spanish" checked>Spanish</input><br>
+								<input type="radio" name="language" value="french">French</input><br>
+								<input type="radio" name="language" value="russian">Russian</input><br>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="tableCell" id="questionCell">
+					<h2 id="question">Choisissez le mot pour: <br></h2>
+					<div class="table">
+						<div class="tableRow">
+							<span class="tableCell" id="wordCell1"></span>
+							<span class="tableCell" id="wordCell2"></span>
+						</div>
+						<div class="tableRow">
+							<span class="tableCell" id="wordCell3"></span>
+							<span class="tableCell" id="wordCell4"></span>
+						</div>
+					</div>
+					<div id="correctMessage"></div>	
+					</p>
+				</div>
+			</div>
+		</div>
+	<script>
+			class Set
+			{
+				constructor(english, spanish, french, russian)
+				{
+					this.english=english;
+					this.spanish=spanish;
+					this.french=french;
+					this.russian=russian;
+				}
+			}
+			var clickingDisabled=false;
+			var numQuestions=0;
+			var numCorrect=0;
+			var sets=[];
+			var wordObjs=[];
+			function setUp()
+			{
+				clickingDisabled=false;
+				numQuestions=0;
+				numCorrect=0;
+				sets=[new Set("Hello", "Hola", "Bonjour", "Привет"), new Set("Goodbye", "Adiós", "Au revoir", "Прощай"), 
+				new Set("Thank you", "Gracias", "Merci", "благодарю вас"), new Set("Bread", "Pan", "Pain", "Xлеб"),
+				new Set("Milk", "Leche", "Lait", "молоко"), new Set("Day", "Dia", "Jour", "день"), new Set("Finger", "Dedo", "Doigt", "палец"),
+				new Set("Toe", "Dedo de pie", "Doigt de pied", "палец ноги"), new Set("House", "Casa", "Maison", "дом")
+				];
+				document.getElementById("scoreText").innerHTML="Score:    0";
+				console.log(langFormTo.elements["language"].value);
+				console.log(langFormTo.elements["language"].value=="spanish");
+				if(langFormTo.elements["language"].value=="french")
+					document.getElementById("question").innerHTML="Choisissez le mot pour: ";
+				else if(langFormTo.elements["language"].value=="spanish")
+					document.getElementById("question").innerHTML="Elige la palabra para: ";
+				else if(langFormTo.elements["language"].value=="russian")
+					document.getElementById("question").innerHTML="Выберите слово для: ";
+				nextTurn();
+			}
+			function nextTurn()
+			{
+				wordObjs=[];
+				clickingDisabled=false;
+				var answers=["", "", "", ""];
+				var choiceInd;
+				do{
+					choiceInd=Math.floor(Math.random()*(sets.length-1));
+					wordObjs[0]=sets[choiceInd];
+				}
+				while(wordObjs[0]==undefined)
+				var rep=false;
+				for(var x=1; x<4; x++)
+				{
+					var rep=false;
+					do{
+						rep=false;
+						wordObjs[x]=sets[Math.floor(Math.random()*(sets.length-1))];
+						for(var i=0; i<x; i++)
+						{
+							if(x!=i && wordObjs[i]==wordObjs[x])
+							{
+								rep=true;
+							}
+						}
+					}
+					while(rep || wordObjs[x]==undefined)
+				}
+				var switchInd=Math.floor(Math.random()*(wordObjs.length-1));
+				var save=wordObjs[switchInd];
+				wordObjs[switchInd]=wordObjs[0];
+				wordObjs[0]=save;
+				for(var x=0; x<4; x++)
+				{
+					var str=sets[choiceInd]+", "+wordObjs[x];
+					document.getElementById("wordCell"+(x+1)).innerHTML=wordObjs[x][langFormTo.elements["language"].value];
+					document.getElementById("wordCell"+(x+1)).onclick=function(){checkAnswer(wordObjs[parseInt(this.getAttribute("id").substring(8))-1][langFormTo.elements["language"].value], wordObjs[switchInd][langFormTo.elements["language"].value])};
+				}
+				if(langFormFrom.elements["language"].value=="english")
+					document.getElementById("question").innerHTML="Choose the word for: ";
+				else if(langFormFrom.elements["language"].value=="french")
+					document.getElementById("question").innerHTML="Choisissez le mot pour: ";
+				else if(langFormFrom.elements["language"].value=="spanish")
+					document.getElementById("question").innerHTML="Elige la palabra para: ";
+				else if(langFormFrom.elements["language"].value=="russian")
+					document.getElementById("question").innerHTML="Выберите слово для: ";
+				document.getElementById("question").innerHTML+="<br><strong>"+sets[choiceInd][langFormFrom.elements["language"].value]+"</strong>";
+				delete sets[choiceInd];
+			}
+			function checkAnswer(answer, correct)
+			{
+				if(!clickingDisabled)
+				{
+					clickingDisabled=true;
+					numQuestions++;
+					if(answer==correct)
+					{
+						numCorrect++;
+						document.getElementById("correctMessage").innerHTML="Correct!!!";
+						document.getElementById("correctMessage").style.color="#cccc00";
+						document.getElementById("correctMessage").style.display="block";
+					}
+					else
+					{
+						document.getElementById("correctMessage").innerHTML="Incorrect";
+						document.getElementById("correctMessage").style.color="#FF0000";
+						document.getElementById("correctMessage").style.display="block";
+					}
+					document.getElementById("scoreText").innerHTML="Score:    "+numCorrect+"/"+numQuestions+" ("+(Math.round((numCorrect/numQuestions)*100))+"%)";
+					setTimeout(function() {document.getElementById("correctMessage").style.display="none"; nextTurn();}, 1500);
+				}
+			}
+			function showLanguageChoices()
+			{
+				document.getElementById("popupButton").onclick=hideLanguageChoices;
+				document.getElementById("languagePopup").style.display="block";
+			}
+			function hideLanguageChoices()
+			{
+				document.getElementById("popupButton").onclick=showLanguageChoices;
+				document.getElementById("languagePopup").style.display="none";
+			}
+			window.onload=setUp;
+			document.getElementById("langFormTo").onchange=setUp;
+			document.getElementById("langFormFrom").onchange=setUp;
+			document.getElementById("popupButton").onclick=showLanguageChoices;
+			document.getElementById("languagePopup").style.display="none";
+	</script>
+	</body>
+</html>

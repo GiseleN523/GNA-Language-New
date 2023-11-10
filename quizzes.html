@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>GNA Language</title>
+		<link rel="stylesheet" href="stylesheet.css">
+		<style>
+			.table
+			{
+				display: table;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.tableRow
+			{
+				display: table-row;
+				padding: 0px;
+				margin: 0px;
+			}
+			.tableCell
+			{
+				display: table-cell;
+				padding: 5px;
+				margin: 0px;
+				text-align: center;
+			}
+			#content
+			{
+				background-color: #FFFFFF;
+				border: 1px solid black;
+				border-radius: 15px;
+				margin: 10px 20px 0px 20px;
+			}
+			img
+			{
+				max-height: 160px;
+				max-width: 200px;
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			#correctMessage
+			{
+				display: none;
+				position: fixed;
+				z-index: 2;
+				width: 500px;
+				height: auto;
+				top: 40%;
+				left: 30%;
+				font-size: 150%;
+				background-color: #FFFFFF;
+				border: 1px solid black;
+				border-radius: 15px;
+				padding: 10px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="title">
+			<h1>GNA Language Central</h1>
+			<h3>"Language Learning Is In Our GNA"</h3>
+		</div>
+		<div id="menu">
+			<h2><a href="index.html">Main</a> | <a href="commonphrases.html">Common Phrases</a> | <a href="">Games</a> | <a href="">Charts/Tables</a> | <a href="">About</a></h2>
+		</div>
+		<div><p>
+			<div id="content">
+			<div class="table">
+				<div class="tableRow">
+					<div class="tableCell"><h2 id="question">Choissisez le photo pour: <br></h2></div>
+					<div class="tableCell"><p id="scoreText">Score: <p><br></div>
+				</div>
+			</div>
+			<div class="table">
+				<div class="tableRow">
+					<div class="tableCell" id="picCell1"></div>
+					<div class="tableCell" id="picCell2"></div>
+				</div>
+				<div class="tableRow">
+					<div class="tableCell" id="picCell3"></div>
+					<div class="tableCell" id="picCell4"></div>
+				</div>
+			</div>
+		</div>
+		<div id="correctMessage"></div>	
+		</p></div>
+	<script>
+		class Pair
+			{
+				constructor(word, image)
+				{
+					this.word=word;
+					this.image=image;
+					this.audio=image.substring(0, image.indexOf("."))+".m4A";
+				}
+			}
+			var clickingDisabled=false;
+			var numQuestions=0;
+			var numCorrect=0;
+			var pairs=[];
+			function setUp()
+			{
+				clickingDisabled=false;
+				numQuestions=0;
+				numCorrect=0;
+				pairs=[new Pair("lundi", "lundi.png"), new Pair("mardi", "mardi.png"), new Pair("mercredi", "mercredi.png"), 
+				new Pair("jeudi", "jeudi.png"), new Pair("vendredi", "vendredi.png"), new Pair("samedi", "samedi.png"), 
+				new Pair("dimanche", "dimanche.png"), new Pair("oui", "oui.png"), new Pair("non", "non.png"), new Pair("la nuit", "nuit.png"),
+				new Pair("bonsoir", "bonsoir.png"), new Pair("merci", "merci.png"),
+				new Pair("monsieur", "monsieur.png"), new Pair("enchanté", "enchante.png"), new Pair("salut", "salut.png"),
+				new Pair("bonjour", "bonjour.png"), new Pair("un escargot", "escargot.png"), new Pair("répéter", "repeter.png"), 
+				new Pair("madame", "madame.png"), new Pair("bonne-nuit", "bonne-nuit.png"), new Pair("bien", "bien.png")/*, new Pair("rien", "rien.png"), 
+				new Pair("un jour", "jour.png"), new Pair("comprendre", "comprendre.png"), new Pair("un voyage", "voyage.png"),
+				new Pair("appeler", "appeler.png"), new Pair("un", "un.png"), new Pair("deux", "deux.png"), new Pair("trois", "trois.png"), 
+				new Pair("quatre", "quatre.png"), new Pair("cinq", "cinq.png"), new Pair("six", "six.png"),
+				new Pair("sept", "sept.png"), new Pair("huit", "huit.png"), new Pair("neuf", "neuf.png"), new Pair("dix", "dix.png"), 
+				new Pair("onze", "onze.png"), new Pair("douze", "douze.png"), new Pair("treize", "treize.png"),
+				new Pair("quatorze", "quatorze.png"), new Pair("quinze", "quinze.png"), new Pair("seize", "seize.png"), 
+				new Pair("dix-sept", "dix-sept.png"), new Pair("dix-huit", "dix-huit.png"), new Pair("dix-neuf", "dix-neuf.png"), 
+				new Pair("vingt", "vingt.png"), new Pair("vingt-et-un", "vingt-et-un.png"), new Pair("vingt-deux", "vingt-deux.png"), 
+				new Pair("trente", "trente.png"), new Pair("quarante", "quarante.png"), new Pair("cinquante", "cinquante.png"), 
+				new Pair("soixante", "soixante.png"), new Pair("soixante-dix", "soixante-dix.png"), new Pair("quatre-vingts", "quatre-vingts.png"),
+				new Pair("quatre-vingt-dix", "quatre-vingt-dix.png"), new Pair("cent", "cent.png"), new Pair("deux-cents", "deux-cents.png"),
+				new Pair("trois-cents", "trois-cents.png"), new Pair("quatre-cents", "quatre-cents.png"), new Pair("mille", "mille.png"), 
+				new Pair("janvier", "janvier.png"), new Pair("février", "fevrier.png"), new Pair("mars", "mars.png"), new Pair("avril", "avril.png"),
+				new Pair("mai", "mai.png"), new Pair("juin", "juin.png"), new Pair("juillet", "juillet.png"), new Pair("août", "aout.png"), 
+				new Pair("septembre", "septembre.png"), new Pair("octobre", "octobre.png"), new Pair("novembre", "novembre.png"), 
+				new Pair("décembre", "decembre.png"), new Pair("un mois", "mois.png"), new Pair("un anniversaire", "anniversaire.png"), 
+				new Pair("un automne", "automne.png"), new Pair("un hiver", "hiver.png"), new Pair("un été", "ete.png"),
+				new Pair("le printemps", "printemps.png"), new Pair("zéro", "zero.png"), new Pair("une heure", "heure.png"), 
+				new Pair("le matin", "matin.png"), new Pair("le soir ", "soir.png"), new Pair("le midi", "midi.png"), 
+				new Pair("le minuit", "minuit.png"), new Pair("une demie", "demie.png"), new Pair("une semaine", "semaine.png"), 
+				new Pair("un ami", "ami.png"), new Pair("une amie", "amie.png"), new Pair("écouter", "ecouter.png"), 
+				new Pair("la musique", "musique.png"), new Pair("toujours", "toujours.png"), new Pair("regarder", "regarder.png"), 
+				new Pair("une télé", "tele.png"), new Pair("préféré(e)/favori(te)", "prefere.png"),
+				new Pair("envoyer", "envoyer.png"), new Pair("détester", "detester.png"), new Pair("faire du shopping", "faire_du_shopping.png"), 
+				new Pair("danser", "danser.png"), new Pair("chanter", "chanter.png"), new Pair("nager", "nager.png"), 
+				new Pair("discuter", "discuter.png"), new Pair("lire", "lire.png"), new Pair("un livre", "livre.png"), new Pair("dormir", "dormir.png"),
+				new Pair("faire du sport", "faire_du_sport.png"), new Pair("un pique-nique", "pique-nique.png"), new Pair("étudier", "etudier.png"), 
+				new Pair("un français", "francais.png"), new Pair("une française", "francaise.png"), new Pair("aimer", "aimer.png"), 
+				new Pair("adorer", "adorer.png"), new Pair("plonger", "plonger.png"), new Pair("voyager", "voyager.png"), 
+				new Pair("surfer", "surfer.png"), new Pair("faire du footing", "faire_du_footing.png"), 
+				new Pair("faire de la gym", "faire_de_la_gym.png"), new Pair("jouer au hockey sur la glace", "jouer_au_hockey_sur_glace.png"), 
+				new Pair("parler", "parler.png"), new Pair("parler au téléphone", "parler_au_telephone.png"),
+				new Pair("faire la cuisine", "faire_la_cuisine.png"), new Pair("cuisine", "cuisine.png"), new Pair("sortir", "sortir.png"),
+				new Pair("faire du vélo", "faire_du_velo.png"), new Pair("un vélo", "velo.png"), new Pair("le chocolat", "chocolat.png"), 
+				new Pair("Quel temps fait-il?", "quel_temps_fait_il.png"), new Pair("chaud", "chaud.png"), new Pair("le soleil", "soleil.png"),
+				new Pair("le vent", "vent.png"), new Pair("froid", "froid.png"), new Pair("la neige", "neige.png"), new Pair("neiger", "neiger.png"), 
+				new Pair("pleuvoir", "pleuvoir.png"), new Pair("un parapluie", "parapluie.png"), new Pair("la pluie", "pluie.png"), 
+				new Pair("une goutte", "goutte.png"), new Pair("tomber", "tomber.png"), new Pair("moi", "moi.png"), new Pair("beau", "beau.png"), 
+				new Pair("mauvais", "mauvais.png"), new Pair("Je n'aime pas", "je_naime_pas.png"), new Pair("le cinéma", "cinema.png"), 
+				new Pair("le ski", "ski.png"), new Pair("le football", "football.png"), new Pair("un magasin", "magasin.png"), 
+				new Pair("la plage", "plage.png"), new Pair("une école", "ecole.png"), new Pair("une frite", "frite.png"),
+				new Pair("l\'anglais", "anglais.png"), new Pair("les vacances", "vacances.png"), new Pair("un examen", "examen.png"),
+				new Pair("les maths", "maths.png"), new Pair("les sciences", "sciences.png"), new Pair("la chimie", "chimie.png"), 
+				new Pair("la physique", "physique.png"), new Pair("la biologie", "biologie.png"), new Pair("l\'histoire", "histoire.png"), 
+				new Pair("la géographie", "geographie.png"), new Pair("l\'informatique", "informatique.png"), new Pair("l\'espagnol", "espagnol.png"), 
+				new Pair("le latin", "latin.png"), new Pair("l\'allemand", "allemand.png"), new Pair("le dessin", "dessin.png"), 
+				new Pair("la chorale", "chorale.png"), new Pair("le déjeuner", "dejeuner.png"), new Pair("le petit-déjeuner", "petit-dejeuner.png")/*, 
+				new Pair("les devoirs", "devoirs.png"), new Pair("un élève", "un_eleve.png"), new Pair("une élève", "une_eleve.png"), 
+				new Pair("le professeur", "professeur.png"), new Pair("la professeure", "professeure.png"), new Pair("un sac-à-dos", "sac-a-dos.png"), 
+				new Pair("un crayon", "crayon.png"), new Pair("un stylo", "stylo.png"), new Pair("une trousse", "trousse.png"), 
+				new Pair("un crayon de couleur", "crayon_de_couleur.png"), new Pair("une calculatrice", "calculatrice.png"), 
+				new Pair("une gomme", "gomme.png"), new Pair("un taille-crayon", "taille-crayon.png"), new Pair("une règle", "regle.png"), 
+				new Pair("une feuille de papier", "feuille_de_papier.png"), new Pair("un cahier", "cahier.png"), 
+				new Pair("un ordinateur", "ordinateur.png"), new Pair("des ciseaux", "ciseaux.png"), new Pair("(de la) colle", "colle.png"), 
+				new Pair("un portable", "portable.png"), new Pair("une tablette", "tablette.png"), new Pair("timide", "timide.png"), 
+				new Pair("paresseux/se", "paresseux.png"), new Pair("drôle", "drole.png"), new Pair("amusant(e)", "amusant.png"), n
+				new Pair("sérieux/se", "serieux.png"), new Pair("beau", "beau.png"), new Pair("belle", "belle.png"), new Pair("joli(e)", "joli.png"), 
+				new Pair("romantique", "romantique.png"), new Pair("intelligent(e)", "intelligent.png"), new Pair("laid(e)", "laid.png"), 
+				new Pair("moche", "moche.png"), new Pair("actif/ve", "actif.png"), new Pair("travailleur/se", "travailleur.png"), 
+				new Pair("bête", "bete.png"), new Pair("gros(se)", "gros.png"), new Pair("égoïste", "egoiste.png"), 
+				new Pair("diligent(e)", "diligent.png"), new Pair("sportif/ve", "sportif.png"), new Pair("grand(e)", "grand.png"), 
+				new Pair("petit(e)", "petit.png"), new Pair("blond(e)", "blond.png"), new Pair("roux/sse", "roux.png"), 
+				new Pair("formidable", "formidable.png"), new Pair("brun(e)", "brun.png"), new Pair("sympa(thique)/amiable", "sympa.png"), 
+				new Pair("méchant(e)", "mechant.png"), new Pair("barbant(e)", "barbant.png"), new Pair("mince", "mince.png"), 
+				new Pair("bavard(e)", "bavard.png"), new Pair("généreux/se", "genereux.png"), new Pair("être", "etre.png"), 
+				new Pair("vendre", "vendre.png"), new Pair("choisir", "choisir.png"), new Pair("jouer", "jouer.png"), new Pair("manger", "manger.png"), 
+				new Pair("finir", "finir.png"), new Pair("attendre", "attendre.png"), new Pair("vouloir", "vouloir.png"), new Pair("aller", "aller.png"), 
+				new Pair("que", "que.png"), new Pair("comment", "comment.png"), new Pair("qui", "qui.png"), new Pair("où", "ou.png"), 
+				new Pair("combien (de)", "combien.png"), new Pair("d'où", "d'ou.png"), new Pair("quel(le)", "quel.png"), 
+				new Pair("pourquoi", "pourquoi.png"), new Pair("quand", "quand.png"), new Pair("une personne", "personne.png"), 
+				new Pair("une famille", "famille.png"), new Pair("une mère", "mere.png"), new Pair("un père", "pere.png"), 
+				new Pair("un frère", "frere.png"), new Pair("une sœur", "soeur.png"), new Pair("un grand-père", "grand-pere.png"), 
+				new Pair("une grand-mère", "grand-mere.png"), new Pair("une tante", "tante.png"), new Pair("un oncle", "oncle.png"), 
+				new Pair("un chat", "chat.png"), new Pair("un chien", "chien.png"), new Pair("une fille", "fille.png"), new Pair("un fils", "fils.png"), 
+				new Pair("un petit-fils", "petit-fils.png"), new Pair("une petite-fille", "petite-fille.png"), 
+				new Pair("une petite amie", "petite_amie.png"), new Pair("un petit ami", "petit_ami.png"), new Pair("avoir", "avoir.png"), 
+				new Pair("les yeux", "yeux.png"), new Pair("couleur", "couleur.png"), new Pair("bleu(e)", "bleu.png"), new Pair("vert(e)", "vert.png"), 
+				new Pair("gris(e)", "gris.png"), new Pair("marron", "marron.png"), new Pair("le cheveu", "cheveu.png"), new Pair("âge", "age.png"), 
+				new Pair("rouge", "rouge.png"), new Pair("orange", "orange.png"), new Pair("jaune", "jaune.png"), new Pair("noir(e)", "noir.png"), 
+				new Pair("blanc(he)", "blanc.png"), new Pair("rose", "rose.png"), new Pair("violet(te)", "violet.png"), new Pair("mettre", "mettre.png"), 
+				new Pair("porter", "porter.png"), new Pair("un maillot de bain", "maillot_de_bain.png"), new Pair("un blouson", "blouson.png"), 
+				new Pair("un manteau", "manteau.png"), new Pair("une chaussure", "chaussure.png"), new Pair("une botte", "botte.png"), 
+				new Pair("une ceinture", "ceinture.png"), new Pair("un chemisier", "chemisier.png"), new Pair("une chaussette", "chaussette"), 
+				new Pair("les lunettes de soleil", "lunettes_de_soleil.png"), new Pair("les lunettes", "lunettes.png"), 
+				new Pair("une cravate", "cravate.png"), new Pair("une montre", "montre.png"), new Pair("une écharpe", "echarpe.png"), 
+				new Pair("une casquette", "casquette.png"), new Pair("un chapeau", "chapeau.png"), 
+				new Pair("une boucle d'oreille", "boucle_d'oreille.png"), new Pair("un pantalon", "pantalon.png"), new Pair("un short", "short.png"), 
+				new Pair("une robe", "robe.png"), new Pair("une jupe", "jupe.png"), new Pair("un tee-shirt", "tee-shirt.png"), 
+				new Pair("un sandwich", "sandwich.png"), new Pair("le jambon", "jambon.png"), new Pair("une frite", "frite.png"), 
+				new Pair("un hot-dog", "hot-dog.png"), new Pair("le fromage", "fromage.png"), new Pair("un croque-monsieur", "croque-monsieur.png"), 
+				new Pair("une quiche", "quiche.png"), new Pair("un hamburger", "hamburger.png"), new Pair("un haricot", "haricot.png"), 
+				new Pair("une carotte", "carotte.png"), new Pair("une légume", "legume.png"), new Pair("une pomme de terre", "pomme_de_terre.png"), 
+				new Pair("un champignon", "champignon.png"), new Pair("un petit pois", "petit_pois.png"), 
+				new Pair("une aubergine", "aubergine.png"), new Pair("une salade", "salade.png"), new Pair("une tomate", "tomate.png"), 
+				new Pair("un crêpe", "crepe.png"), new Pair("un croissant", "croissant.png"), new Pair("un pain au chocolat", "pain_au_chocolat.png"), 
+				new Pair("la glace", "glace.png"), new Pair("une gâteau", "gateau.png"), new Pair("un macaron", "macaron.png"), 
+				new Pair("un beignet", "beignet.png"), new Pair("une pomme", "pomme.png"), new Pair("un café", "cafe.png"), 
+				new Pair("un jus d'orange", "jus_d'orange.png"),new Pair("un jus de pomme", "jus_de_pomme.png"), new Pair("une limonade", "limonade.png"), 
+				new Pair("un menthe à l'eau", "menthe_a_l'eau.png"), new Pair("un citron pressé", "citron_presse.png"), 
+				new Pair("un coca", "coca.png"), new Pair("une eau minérale", "eau_minerale.png"), new Pair("bouteille d'eau", "bouteille d'eau.png"), 
+				new Pair("une fraise", "fraise.png"), new Pair("une banane", "banane.png"), new Pair("une croque-madame", "croque-madame.png"), 
+				new Pair("un saucisson", "saucisson.png"), new Pair("une poire", "poire.png"), new Pair("le lait", "lait.png"), 
+				new Pair("un boisson", "boisson.png"), new Pair("un dessert", "dessert.png"),
+				
+				
+				new Pair("faire", "faire.png"), new Pair("je", "je.png"), new Pair("tu", "tu.png"), new Pair("il", "il.png"), 
+				new Pair("elle", "elle.png"), new Pair("on", "on.png"), new Pair("nous", "nous.png"), new Pair("vous", "vous.png"), 
+				new Pair("ils", "ils.png"), new Pair("elles", "elles.png"), new Pair("partir", "partir.png"), new Pair("servir", "servir.png"), 
+				new Pair("mentir", "mentir.png"), new Pair("endormir", "endormir.png"), new Pair("sympathique/sympa/aimable", "sympathique.png"), 
+				new Pair("unique", "unique.png"), new Pair("attentif/ve", "attentif.png"), new Pair("heureux/se", "heureux.png"), 
+				new Pair("bon(ne)", "bon.png"), new Pair("gentil(le)", "gentil.png"), new Pair("vieux/vieille", "vieux.png"), 
+				new Pair("nouveau/nouvelle", "nouveau.png"), new Pair("à la/au/à l'/aux", "a.png"), 
+				new Pair("de la/du/de l'/des", "de_la.png"), new Pair("prendre", "prendre.png"), new Pair("pouvoir", "pouvoir.png"), 
+				new Pair("dire", "dire.png"), new Pair("écrire", "ecrire.png"), new Pair("venir", "venir.png"), new Pair("commencer", "commencer.png"), 
+				new Pair("effacer", "effacer.png"), new Pair("acheter", "acheter.png"), new Pair("lever", "lever.png"), new Pair("peser", "peser.png"), 
+				new Pair("préférer", "preferer.png"), new Pair("espérer.png", "esperer.png"), new Pair("payer", "payer.png"), 
+				new Pair("essayer", "essayer.png"), new Pair("envoyer", "envoyer.png"), new Pair("Le Jour de l'an", "jour_de_l'an.png"), 
+				new Pair("La Saint-Valentin", "saint-valentin.png"), new Pair("La Saint-Jean", "saint-jean.png"), 
+				new Pair("La fête nationale", "fete_nationale.png"), new Pair("L'Action de Grâce", "action_de_grace.png"), 
+				new Pair("La Toussaint", "toussaint.png"), new Pair("Noël", "noel.png"), new Pair("un feu de joie", "feu_de_joie.png"), 
+				new Pair("un feu", "feu.png"), new Pair("un feu d'artifice", "feu_d'artifice.png"), new Pair("autochtone", "autochtone.png"), 
+				new Pair("québécois(e)", "quebecois.png"), new Pair("les jours fériés", "jours_feries.png"), new Pair("l'Épiphanie", "epiphanie.png"),
+				new Pair("Mardi Gras", "mard_gras.png"), new Pair("Pâques", "paques.png"), new Pair("l'indépendence", "independence.png"), 
+				new Pair("religieux/se", "religieux.png"), new Pair("fêter", "fêter.png"), new Pair("une fête", "fête.png"), new Pair("vers", "vers.png"), 
+				new Pair("avoir lieu", "avoir_lieu.png"), new Pair("quelqu'un", "quelqu'un.png"), new Pair("souvent", "souvent.png"), 
+				new Pair("quelque chose", "quelque_chose.png"), new Pair("un guide télévisé", "guide_televise.png"), 
+				new Pair("une émission", "emission.png"), new Pair("un dessin animé", "dessin_anime.png"), 
+				new Pair("un jeu télévisé", "jeu_televise.png"), new Pair("les informations/infos", "informations.png"),
+				new Pair("la météo", "meteo.png"), new Pair("un bulletin météologique", "bulletin_meteologique.png"), 
+				new Pair("un reportage", "reportage.png"), new Pair("un reportage sportif", "reportage_sportif"),
+				new Pair("un feuilleton", "feuilleton.png"), new Pair("une série", "serie.png"), new Pair("un sitcom", "sitcom.png"), 
+				new Pair("une émission de musique", "emission_de_musique.png"), new Pair("une émission de télé-réalité", "emission_de_tele-realite.png"), 
+				new Pair("un présentateur", "presentateur.png"), new Pair("une présentatrice", "presentatrice.png"), 
+				new Pair("un animateur", "animateur.png"), new Pair("une animatrice", "animatrice.png"), 
+				new Pair("un spot publicitaire", "spot_publicitaire.png"), new Pair("une publicité/réclame", "publicite.png"), 
+				new Pair("une télécommande", "telecommande.png"), new Pair("un(e) cinéphile", "cinephile.png"), new Pair("par câble", "par_cable.png"), 
+				new Pair("par satellite", "par_satellite.png"), new Pair("un téléfilm", "telefilm.png"), new Pair("les variétés", "varietes.png")
+				new Pair("un téléspectateur", "telespectateur.png"), new Pair("une téléspectatrice", "telespectatrice.png")
+				//pg 27
+				
+				//pg 19: mon, ma, mes, ton, ta, tes, son, sa, ses, notre, notre, nos, votre, votre, vos, leur, leur, leurs??????????????????
+				*/
+				];
+				//french 2
+			}
+			function nextTurn()
+			{
+				clickingDisabled=false;
+				var picObjs=["", "", "", ""];
+				var choiceInd;
+				do{
+					choiceInd=Math.floor(Math.random()*(pairs.length-1));
+					picObjs[0]=pairs[choiceInd];
+				}
+				while(picObjs[0]==undefined)
+				var rep=false;
+				for(var x=1; x<4; x++)
+				{
+					var rep=false;
+					do{
+						console.log(picObjs[x]);
+						rep=false;
+						picObjs[x]=pairs[Math.floor(Math.random()*(pairs.length-1))];
+						for(var i=0; i<x; i++)
+						{
+							if(x!=i && picObjs[i]==picObjs[x])
+								rep=true;
+						}
+					}
+					while(rep || picObjs[x]==undefined)
+				}
+				var switchInd=Math.floor(Math.random()*(picObjs.length-1));
+				var save=picObjs[switchInd];
+				picObjs[switchInd]=picObjs[0];
+				picObjs[0]=save;
+				for(var x=0; x<4; x++)
+				{
+					var str=pairs[choiceInd]+", "+picObjs[x];
+					document.getElementById("picCell"+(x+1)).innerHTML="<img src='../FrenchVocab/"+picObjs[x].image+"'>";
+					document.getElementById("picCell"+(x+1)).onclick=function(){checkAnswer(picObjs[parseInt(this.getAttribute("id").substring(7))-1].word, picObjs[switchInd].word)};
+				}
+				document.getElementById("question").innerHTML="Choissisez le photo pour: <br><strong>"+pairs[choiceInd].word+"</strong>";
+				delete pairs[choiceInd];
+			}
+			function checkAnswer(answer, correct)
+			{
+				console.log(answer+" "+correct);
+				if(!clickingDisabled)
+				{
+					clickingDisabled=true;
+					numQuestions++;
+					if(answer==correct)
+					{
+						numCorrect++;
+						document.getElementById("correctMessage").innerHTML="Correct!!!";
+						document.getElementById("correctMessage").style.color="#cccc00";
+						document.getElementById("correctMessage").style.display="block";
+					}
+					else
+					{
+						document.getElementById("correctMessage").innerHTML="Incorrect";
+						document.getElementById("correctMessage").style.color="#FF0000";
+						document.getElementById("correctMessage").style.display="block";
+					}
+					document.getElementById("scoreText").innerHTML="Score: <br>"+numCorrect+"/"+numQuestions+"<br>"+Math.round((numCorrect/numQuestions)*100)+"%";
+					console.log(numCorrect+":"+Math.round((numCorrect/numQuestions)*100)+"%");
+					setTimeout(function() {document.getElementById("correctMessage").style.display="none";
+					nextTurn();}, 1500);
+				}
+			}
+			window.onload=function(){setUp(); console.log("length: "+pairs.length); nextTurn()};
+	</script>
+	</body>
+</html>

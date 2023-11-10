@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>GNA Language</title>
+		<link rel="stylesheet" href="stylesheet.css">
+		<style>
+			.table
+			{
+				display: table;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+			}
+			.tableRow
+			{
+				display: table-row;
+				padding: 0px;
+				margin: 0px;
+				text-align: center;
+			}
+			.tableCell
+			{
+				display: table-cell;
+				padding: 5px;
+				margin: 0px;
+				text-align: center;
+				color: #cc6699;
+				padding: 0px 30px 0px 30px;
+			}
+			#content
+			{
+				border: 1px solid black;
+				border-radius: 15px;
+				margin: 10px 20px 0px 20px;
+			}
+			#correctMessage
+			{
+				display: none;
+				position: fixed;
+				z-index: 2;
+				width: 500px;
+				height: auto;
+				top: 40%;
+				left: 30%;
+				font-size: 150%;
+				background-color: #FFFFFF;
+				border: 1px solid black;
+				border-radius: 15px;
+				padding: 10px;
+				text-align: center;
+			}
+			#wordCell1, #wordCell2, #wordCell3, #wordCell4
+			{
+				font-size: 130%;
+				padding: 10px;
+				cursor: pointer;
+			}
+			#wordCell1, #wordCell3
+			{
+				text-align: right;
+			}
+			#wordCell2, #wordCell4
+			{
+				text-align: left;
+			}
+			form
+			{
+				text-align: left;
+			}
+			.accentButton
+			{
+				border: 2px solid black;
+				border-radius: 5px;
+				padding: 8px;
+				width: auto;
+				height: auto;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="title">
+			<h1>GNA Language Central</h1>
+			<h3>"Language Learning Is In Our GNA"</h3>
+		</div>
+		<div id="menu">
+			<ul><li><a class="menuCell" href="index.html">Main</a></li><li><a class="menuCell" href="commonphrases.html">Common Phrases</a></li><li><span class="menuCell" id="gamesTab">Games<div id="gamesMenu"><p>
+				<a href="vocabGame.html">Vocab Game</a><br>
+				<a href="conjugationGame.html">Conjugations</a><br>
+				<a href="landmarkGame.html">Toponym Game</a><br>
+			</p></div></span></li><li><a class="menuCell" href="">Charts/Tables</a></li><li><a class="menuCell" href="">About</a></li></ul>
+		</div>
+		<div><p>
+			<div id="content">
+			<div class="table">
+				<div class="tableRow">
+					<div class="tableCell">
+					<form id="langForm">
+						Language To:<br>
+						<input type="radio" name="language" value="french" checked>French</input><br>
+					</form>
+					</div>
+					<div class="tableCell">
+						<div class="table">
+							<div class="tableRow">
+								<div class="tableCell"><h2 id="question">Écrivez le conjugaison pour: <br></h2>
+									<form>
+										<input id="inputBox" type="textBox"></input>
+									</form><br><br>
+									<span class="accentButton">é</span>
+									<span class="accentButton">è</span>
+									<span class="accentButton">ç</span>
+									<span class="accentButton">à</span><br><br><br>
+									
+								</div>
+								<div class="tableCell"><p id="scoreText">Score: <p><br></div><br><br>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="correctMessage"></div>	
+		</p></div>
+	<script>
+			class Set
+			{
+				constructor(infinitive, i, youInformal, heShe, we, youFormal, they)
+				{
+					this.infinitive=infinitive;
+					this.conjugations=[i, youInformal, heShe, we, youFormal, they];
+				}
+			}
+			var clickingDisabled=false;
+			var numQuestions=0;
+			var numCorrect=0;
+			var spanishSets=[];
+			var frenchSets=[];
+			var russianSets=[];
+			var set;
+			var choiceInd;
+			var pronounInd;
+			var pronouns;
+			var pronounChosen;
+			function setUp()
+			{
+				clickingDisabled=false;
+				numQuestions=0;
+				numCorrect=0;
+				spanishSets=[];
+				frenchSets=[new Set("Manger", "Mange", "Manges", "Mange", "Mangeons", "Mangez", "Mangent"),
+					new Set("Aimer", "Aime", "Aimes", "Aime", "Aimons", "Aimez", "Aiment"),
+					new Set("Voyager", "Voyage", "Voyages", "Voyage", "Voyageons", "Voyagez", "Voyagent"),
+					new Set("Adorer", "Adore", "Adores", "Adore", "Adorons", "Adorez", "Adorent"),
+					new Set("Jouer", "Joue", "Joues", "Joue", "Jouons", "Jouez", "Jouent")];
+				russianSets=[];
+				document.getElementById("scoreText").innerHTML="Score: ";
+				if(langForm.elements["language"].value=="french")
+					document.getElementById("question").innerHTML="Écrivez le conjugaison pour: ";
+				else if(langForm.elements["language"].value=="spanish")
+					document.getElementById("question").innerHTML="Elige la palabra para: ";
+				else if(langForm.elements["language"].value=="russian")
+					document.getElementById("question").innerHTML="Выберите слово для: ";
+				document.getElementById("inputBox").focus();
+				nextTurn();
+			}
+			function nextTurn()
+			{
+				wordObjs=[];
+				clickingDisabled=false;
+				if(langForm.elements["language"].value=="spanish")
+				{
+					set=spanishSets;
+					pronouns=[];
+				}
+				if(langForm.elements["language"].value=="french")
+				{
+					set=frenchSets;	
+					pronouns=[["Je"], ["Tu"], ["Il", "Elle", "On", "Qui", "Jean", "Pierre", "Michel", "André", "Philippe", "René", "Louis", "Alain", "Jacques", "Marie", "Jeanne", "Françoise", "Monique", "Catherine", "Nathalie", "Isabelle", "Jacqueline", "Anne"], ["Nous"], ["Vous"], ["Ils", "Elles", "Bernard et Marcel", "Daniel et Roger", "Robert et Paul", "Sylvie et Martine", "Madeleine et Nicole", "Suzanne et Hélène", "Claude et Christine", "Christian et Marguerite", "Denise et Henry", "Louise et Georges", "Nicolas et Christiane"]];
+				}
+				else if(langForm.elements["language"].value=="russian")
+				{
+					set=russianSets;
+					pronouns=[];
+				}
+				choiceInd=Math.floor(Math.random()*(set.length));
+				pronounInd=Math.floor(Math.random()*(set[choiceInd].conjugations.length));
+				if(langForm.elements["language"].value=="french")
+					document.getElementById("question").innerHTML="Écrivez le conjugasion pour: ";
+				else if(langForm.elements["language"].value=="spanish")
+					document.getElementById("question").innerHTML="Elige la palabra para: ";
+				else if(langForm.elements["language"].value=="russian")
+					document.getElementById("question").innerHTML="Выберите слово для: ";
+				pronounChosen=pronouns[pronounInd][Math.floor(Math.random()*(pronouns[pronounInd].length))];
+				document.getElementById("question").innerHTML+="<br><strong>"+pronounChosen+" "+set[choiceInd].infinitive+"</strong>";
+			}
+			function checkAnswer(answer, correct)
+			{
+				if(!clickingDisabled)
+				{
+					clickingDisabled=true;
+					numQuestions++;
+					if(answer.toLowerCase()==correct.toLowerCase())
+					{
+						numCorrect++;
+						document.getElementById("correctMessage").innerHTML="Correct!!!";
+						document.getElementById("correctMessage").style.color="#cccc00";
+						document.getElementById("correctMessage").style.display="block";
+					}
+					else
+					{
+						document.getElementById("correctMessage").innerHTML="Incorrect...<br>"+pronounChosen+" "+correct;
+						document.getElementById("correctMessage").style.color="#FF0000";
+						document.getElementById("correctMessage").style.display="block";
+					}
+					document.getElementById("scoreText").innerHTML="Score: <br>"+numCorrect+"/"+numQuestions+"<br>"+Math.round((numCorrect/numQuestions)*100)+"%";
+					setTimeout(function() {document.getElementById("correctMessage").style.display="none"; document.getElementById("inputBox").value=""; document.getElementById("inputBox").focus(); nextTurn();}, 2000);
+				}
+			}
+			window.onload=setUp;
+			document.getElementById("langForm").onchange=setUp;
+			document.getElementById("langForm").onchange=setUp;
+			document.onkeypress=function(e){
+				if(e.keyCode===13)
+				{
+					event.preventDefault();
+					checkAnswer(checkAnswer(document.getElementById("inputBox").value, set[choiceInd].conjugations[pronounInd]));
+					return;
+				}
+			};
+			for(var x=0; x<document.getElementsByClassName("accentButton").length; x++)
+			{
+				document.getElementsByClassName("accentButton")[x].onclick=function(){document.getElementById("inputBox").value+=this.innerHTML};
+			}
+	</script>
+	</body>
+</html>

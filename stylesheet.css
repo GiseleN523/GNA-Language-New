@@ -1,0 +1,96 @@
+a{
+	text-decoration: none;
+}
+
+body{
+	background-color: white;
+	color: #cc6699;
+	font-size: 20px;
+}
+
+h2
+{
+	font-size: 125%;
+}
+
+#title{
+	font-size: 100%;
+	text-align: center;
+	padding: 0px;
+	margin: 0px;
+	/* 0px 10px 0px 10px; */
+}
+
+#menu{
+	text-align: center;
+	border-bottom: 3px solid #006699;
+	border-top: 3px solid #006699;
+	padding: 0px;
+	margin: 0px auto;
+}
+
+p
+{
+	font-size: 90%;
+	color: #000000;
+}
+
+h3
+{
+	color: #006699;
+}
+
+.menuCell:hover
+{
+	background-color: #cc6699;
+	color: #ffffff;
+	border-radius: 5px;
+}
+#gamesMenu
+{
+	z-index: 10;
+	background-color: #cc6699;
+	color: #ffffff;
+	border-radius: 0px 0px 7px 7px;
+	text-align: center;
+	min-width: 175px;
+	padding: 5px;
+	position: absolute;
+	top: 218px; /*change */
+	left: 45%; /*change */
+	display: none;
+}
+#gamesMenu a
+{
+	color: #000000;
+	margin: 10px;
+	border-bottom: 2px solid black;
+}
+li
+{
+	text-decoration: none;
+	display: inline;
+	color: #006699;
+	font-size: 115%;
+}
+
+.menuCell
+{
+	color: #cc6699;
+	padding: 20px;
+}
+
+#gamesTab:hover
+{
+	border-radius: 5px 5px 0px 0px;
+}	
+
+#gamesTab:hover #gamesMenu
+{
+	display: inline;
+}
+
+#gamesMenu a:hover
+{
+	color: white;
+}

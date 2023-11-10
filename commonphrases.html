@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>GNA Language</title>
+		<link rel="stylesheet" href="stylesheet.css">
+		<style>
+			table, td, th
+			{
+				border: 3px solid black;
+				border-collapse: collapse;
+				color: black;
+			}
+			td
+			{
+				margin:0px;
+				padding: 10px;
+			}
+			table
+			{
+				width: 80%;
+				margin: 0% 10% 0% 10%;
+			}
+			th:first-child, td:first-child
+			{
+				background-color: white;
+			}
+			th:nth-child(2), td:nth-child(2)
+			{
+				background-color: yellow;
+			}
+			th:nth-child(3), td:nth-child(3)
+			{
+				background-color: #0066ff;
+			}
+			th:nth-child(4), td:nth-child(4)
+			{
+				background-color: #ff3333;
+			}
+			img
+			{
+				max-width: 25px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="title">
+			<h1>GNA Language Central</h1>
+			<h3>"Language Learning Is In Our GNA"</h3>
+		</div>
+		<div id="menu">
+			<ul><li><a class="menuCell" href="index.html">Main</a></li><li><a class="menuCell" href="">Common Phrases</a></li><li><span class="menuCell" id="gamesTab">Games<div id="gamesMenu"><p>
+				<a href="vocabGame.html">Vocab Game</a><br>
+				<a href="conjugationGame.html">Conjugations</a><br>
+				<a href="landmarkGame.html">Toponym Game</a><br>
+			</p></div></span></li><li><a class="menuCell" href="">Charts/Tables</a></li><li><a class="menuCell" href="">About</a></li></ul>
+		</div>
+		<audio><source src="hello.m4A">Not shown</audio>
+		<audio><source src="hola.m4A">Not shown</audio>
+		<audio><source src="bonjour.m4A">Not shown</audio>
+		<p><table>
+			<tr>
+				<th>English</th>
+				<th>Spanish</th>
+				<th>French</th>
+				<th>Russian</th>
+			</tr>
+			<tr>
+			<td>Hello</td>
+				<td>Hola</td>
+				<td>Bonjour</td>
+				<td>Привет</td>
+			</tr>
+			<tr>
+			<td>Goodbye</td>
+				<td>Adiós</td>
+				<td>Au revoir</td>
+				<td>Прощай</td>
+			</tr>
+			<tr>
+			<td>Thank you</td>
+				<td>Gracias</td>
+				<td>Merci</td>
+				<td>благодарю вас</td>
+			</tr>
+			<tr>
+			<td>You’re Welcome</td>
+				<td>De Nada</td>
+			<td>De Rien</td>
+				<td>пожалуйста</td>
+			</tr>
+			<tr>
+			<td>Excuse Me</td>
+				<td>Perdón</td>
+			<td>Pardon</td>
+				<td>Простите</td>
+			</tr>
+			<tr>
+			<td>How are you</td>
+				<td>Qué tal</td>
+			<td>Ça va/ Comment ça va/<br> Comment allez-vous/ Comment vas-tu</td>
+				<td>Kak dela</td>
+			</tr>
+			<tr>
+			<td>My name is...</td>
+				<td>Me llamo...</td>
+			<td>Je m’appelle...</td>
+				<td>У меня зовут...</td>
+			</tr>
+
+
+
+		</table></p>
+		<script>
+			var listOfAudio=document.getElementsByTagName("audio");
+			var listOfTds=document.getElementsByTagName("td");
+			for(var x=0; x<listOfAudio.length; x++)
+			{
+				listOfTds[x].innerHTML+='  <img src="speaker.png">';
+				listOfTds[x].onclick=function(){
+					var ind=0;
+					for(var i=0; i<listOfTds.length; i++)
+					{
+						if(listOfTds[i]===this)
+							ind=i;
+					}
+					listOfAudio[ind].play();
+				};
+			}
+		</script>
+	</body>
+</html>
